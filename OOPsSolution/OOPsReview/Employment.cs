@@ -72,13 +72,13 @@ namespace OOPsReview
                 if (string.IsNullOrWhiteSpace(value))
                // {
                     throw new ArgumentNullException("Title", "Title cannot be empty or just blanks");
-               // }
-               // else
-               // {
-                    //it is a very good practice to remove leading and trailing spaces on strings
-                    //  so that only the required and important characters are stored.
-                    //to do this santization use .Trim()
-                    _Title =value.Trim();
+                // }
+                // else
+                // {
+                //it is a very good practice to remove leading and trailing spaces on strings
+                //  so that only the required and important characters are stored.
+                //to do this santization use .Trim()
+                _Title =value.Trim();
                // }
             }
         }
