@@ -130,7 +130,9 @@ namespace OOPsReview
         public SupervisoryLevel Level 
         {
             get { return _Level; }
-            set { _Level = value; }
+
+            //set was changed to be private during the demonstration of methods
+            private set { _Level = value; }
         }
 
         //constructors
@@ -200,11 +202,77 @@ namespace OOPsReview
             // .Today has a time of 00:00:00 AM
             // .Now has a specific time of day 13:05:45 PM
             //by using the .Today.AddDays(1) you cover all times on a specific date
-            if (startdate >= DateTime.Today.AddDays(1))
-                throw new ArgumentException($"The start data of {startdate} is invalid, dates cannot be in the future");
-            StartDate = startdate;
+
+            //if (startdate >= DateTime.Today.AddDays(1))
+            //    throw new ArgumentException($"The start data of {startdate} is invalid, dates cannot be in the future");
+            //StartDate = startdate;
+
+            //replacement with private method to do value validation
+            if (CheckDate(startdate))
+                StartDate = startdate;
+
         }
 
-        //methods (behaviours)
+        //methods (aka behaviours)
+        public override string ToString()
+        {
+            //this string is known as a "comma separate value" string (csv)
+            //concern: when the date is used, it could have a , within the data value
+            //solution: IF this is a possibility that a value that is used in creating the string pattern
+            //              could make the pattern invalid, you should explicitly handle how the value should be
+            //              displayed in the string
+            //example Date:  Jan 05, 2025 (due to using StartDate.ToShortDate())
+            //solution:  specific your own format  StartDate.ToString("MMM dd yyyy")
+
+            //Another solution is to change your delimitator that separates your values to a character
+            //  that is not within your range of possible values
+            //example use a '/'
+            //when you use the .Split(delimitator) method to breakup the string into separate values
+            //  you would use the delimitator '/':  string [] pieces = thestring.Split('/')
+
+            return $"{Title},{Level},{StartDate.ToString("MMM dd yyyy")},{Years}";
+        }
+
+        //Sample action: changed the SupervisoryLevel to be a private set
+        //this means altering the Level must be done in constructor (which executes ONLY ONCE during creation) or
+        //  via a method
+
+        public void SetEmploymentResponsibilityLevel(SupervisoryLevel level)
+        {
+            Level = level;
+        }
+
+        //StartDate is private set
+        //Note: when you have a private set, you MAY NEED to duplicate validation in several
+        //      places (constructor AND this method)
+        public void CorrectStartDate(DateTime startdate)
+        {
+            if (CheckDate(startdate))
+                 StartDate = startdate;
+        }
+
+        public double CalculateLengthOfService()
+        {
+            double lengthOfService = 0;
+            //do a calculation that determines how long one has been in the position
+            //since the instance needs to exist to be able to call this method in the first place
+            //  that means that the data is ALREADY in the instance AND THEREFORE does NOT need to
+            //  be passed in as a parameter!!!!
+
+
+            return lengthOfService;
+        }
+
+        //create a private method to handle duplicate code within a class where the method
+        //  is NOT for use by the outside user
+        //Example: the validation of startdate is in two places
+        //          reduce redundance by making a private method 
+        private bool CheckDate(DateTime value)
+        {
+            
+            if (value >= DateTime.Today.AddDays(1))
+                throw new ArgumentException($"The start data of {value} is invalid, dates cannot be in the future");
+            return true;
+        }
     }
 }
