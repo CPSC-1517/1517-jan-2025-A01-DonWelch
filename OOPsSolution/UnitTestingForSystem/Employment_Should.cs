@@ -96,24 +96,25 @@ namespace UnitTestingForSystem
         }
 
         ////DO NOT use if your class demonstration has made Years set private
-        //[Fact]
-        //public void Change_the_Years()
-        //{
-        //    //Where - Arrange setup
-        //    string Title = "SAS Lead";
-        //    SupervisoryLevel Level = SupervisoryLevel.TeamLeader;
-        //    DateTime StartDate = new DateTime(2020, 10, 24);
-        //    TimeSpan days = DateTime.Today - StartDate;
-        //    double Years = Math.Round((days.Days / 365.2), 1);
-        //    Employment sut = new Employment(Title, Level, StartDate, Years);
-        //    double expectedYears = 4.9;
+        [Fact]
+        public void Change_the_Years()
+        {
+            //Where - Arrange setup
+            string Title = "SAS Lead";
+            SupervisoryLevel Level = SupervisoryLevel.TeamLeader;
+            DateTime StartDate = new DateTime(2020, 10, 24);
+            TimeSpan days = DateTime.Today - StartDate;
+            double Years = Math.Round((days.Days / 365.2), 1);
+            Employment sut = new Employment(Title, Level, StartDate, Years);
+            days = DateTime.Today - new DateTime(2019, 10, 24);
+            double expectedYears = Math.Round((days.Days / 365.2), 1);
 
-        //    //When - Act execution
-        //    sut.CorrectStartDate(new DateTime(2019, 10, 24)) ;
+            //When - Act execution
+            sut.CorrectStartDate(new DateTime(2019, 10, 24));
 
-        //    //Then - Assert check
-        //    sut.Years.Should().Be(expectedYears);
-        //}
+            //Then - Assert check
+            sut.Years.Should().Be(expectedYears);
+        }
 
         [Fact]
         public void Set_The_SupervisoryLevel()
@@ -162,24 +163,24 @@ namespace UnitTestingForSystem
         }
 
 
-        //[Fact]
-        //public void Create_CSV_String()
-        //{
-        //    string Title = "SAS Lead";
-        //    SupervisoryLevel Level = SupervisoryLevel.TeamLeader;
-        //    DateTime StartDate = new DateTime(2020, 10, 24);
-        //    TimeSpan days = DateTime.Today - StartDate;
-        //    double Years = Math.Round((days.Days / 365.2), 1);
-        //    Employment sut = new Employment(Title, Level, StartDate, Years);
-        //    string expectedCSV = $"SAS Lead,TeamLeader,Oct. 24 2020,{Years}";
+        [Fact]
+        public void Create_CSV_String()
+        {
+            string Title = "SAS Lead";
+            SupervisoryLevel Level = SupervisoryLevel.TeamLeader;
+            DateTime StartDate = new DateTime(2020, 10, 24);
+            TimeSpan days = DateTime.Today - StartDate;
+            double Years = Math.Round((days.Days / 365.2), 1);
+            Employment sut = new Employment(Title, Level, StartDate, Years);
+            string expectedCSV = $"SAS Lead,TeamLeader,Oct. 24 2020,{Years}";
 
-        //    //When - Act execution
-        //    string actual = sut.ToString();
+            //When - Act execution
+            string actual = sut.ToString();
 
-        //    //Then - Assert check
-        //    actual.Should().Be(expectedCSV);
+            //Then - Assert check
+            actual.Should().Be(expectedCSV);
 
-        //}
+        }
 
 
         #endregion
@@ -294,24 +295,24 @@ namespace UnitTestingForSystem
 
         //}
 
-        //[Fact]
-        //public void Set_The_Correct_StartDate_Throws_Exception()
-        //{
-        //    //Where - Arrangement setup
-        //    string Title = "SAS Lead";
-        //    SupervisoryLevel Level = SupervisoryLevel.TeamLeader;
-        //    DateTime StartDate = new DateTime(2020, 10, 24);
-        //    TimeSpan days = DateTime.Today - StartDate;
-        //    double Years = Math.Round((days.Days / 365.2), 1);
-        //    Employment sut = new Employment(Title, Level, StartDate, Years);
+        [Fact]
+        public void Set_The_Correct_StartDate_Throws_Exception()
+        {
+            //Where - Arrangement setup
+            string Title = "SAS Lead";
+            SupervisoryLevel Level = SupervisoryLevel.TeamLeader;
+            DateTime StartDate = new DateTime(2020, 10, 24);
+            TimeSpan days = DateTime.Today - StartDate;
+            double Years = Math.Round((days.Days / 365.2), 1);
+            Employment sut = new Employment(Title, Level, StartDate, Years);
 
-        //    //When - Act execution
-        //    Action action = () => sut.CorrectStartDate(new DateTime(2919, 10, 24));
+            //When - Act execution
+            Action action = () => sut.CorrectStartDate(new DateTime(2919, 10, 24));
 
-        //    //Then - Assert check
-        //    action.Should().Throw<ArgumentException>().WithMessage("*future*");
+            //Then - Assert check
+            action.Should().Throw<ArgumentException>().WithMessage("*future*");
 
-        //}
+        }
         #endregion
     }
 }

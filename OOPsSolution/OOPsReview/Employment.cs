@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace OOPsReview
 {
     public class Employment
@@ -95,7 +96,11 @@ namespace OOPsReview
             get { return _Years; }
             set
             {
-                if (value < 0)
+                //replace the hard-coded validation test with a static method in a "utilities" class
+                //if (value < 0)
+
+                //use the sample static method from the Utilities class
+                if (!Utilities.IsZeroOrPositive(value))
                     throw new ArgumentException($"The value {value} is not acceptable for years. Years must be 0 or greater.");
                 _Years = value;
             }
@@ -230,7 +235,7 @@ namespace OOPsReview
             //when you use the .Split(delimitator) method to breakup the string into separate values
             //  you would use the delimitator '/':  string [] pieces = thestring.Split('/')
 
-            return $"{Title},{Level},{StartDate.ToString("MMM dd yyyy")},{Years}";
+            return $"{Title},{Level},{StartDate.ToString("MMM. dd yyyy")},{Years}";
         }
 
         //Sample action: changed the SupervisoryLevel to be a private set
@@ -249,6 +254,11 @@ namespace OOPsReview
         {
             if (CheckDate(startdate))
                  StartDate = startdate;
+
+            //during the testing of the unit tests, it has been discovered that the number of years
+            //   should also be altered to have a correct timespan
+            TimeSpan days = DateTime.Today - StartDate;
+            Years = Math.Round((days.Days / 365.2), 1);
         }
 
         public double CalculateLengthOfService()
