@@ -145,9 +145,71 @@ namespace TDDUnitTesting
         #region Properties
         #region Successful Tests
         //directly change the firstname (character string exists)
+        [Fact]
+        public void Directly_Change_First_Name_Via_Property()
+        {
+            //Arrange
+            string expectedFirstName = "Bob";
+            //since we are trying to use the property of an instance, one needs an instance in the first place
+            Person sut = new Person("Don", "Welch", null, null);
+
+            //Act
+            //image the following statement is taken from a programmer's code
+            sut.FirstName = "Bob";
+
+            //Assert
+            sut.FirstName.Should().Be(expectedFirstName);
+        }
         //directly change the lastname (character string exists)
+        [Fact]
+        public void Directly_Change_Last_Name_Via_Property()
+        {
+            //Arrange
+            string expectedLastName = "Ujest";
+            //since we are trying to use the property of an instance, one needs an instance in the first place
+            Person sut = new Person("Don", "Welch", null, null);
+
+            //Act
+            //image the following statement is taken from a programmer's code
+            sut.LastName = "Ujest";
+
+            //Assert
+            sut.LastName.Should().Be(expectedLastName);
+        }
         //directly change the address (value can be instance or null)
+        [Fact]
+        public void Directly_Change_Address_Via_Property()
+        {
+            //Arrange
+            ResidentAddress expectedAddress = new ResidentAddress(321,"Ash Lane","Edmonton","AB","E4R5T6");
+            //since we are trying to use the property of an instance, one needs an instance in the first place
+            Person sut = new Person("Don", "Welch",
+                new ResidentAddress(123, "Maple St", "Edmonton", "AB", "Y7U8I9"), null);
+
+            //Act
+            //image the following statement is taken from a programmer's code
+            sut.Address = new ResidentAddress(321, "Ash Lane", "Edmonton", "AB", "E4R5T6");
+
+            //Assert
+            sut.Address.Should().Be(expectedAddress);
+        }
+        [Fact]
+        public void Directly_Change_Address_To_Empty_Value_Via_Property()
+        {
+            //Arrange
+            //since we are trying to use the property of an instance, one needs an instance in the first place
+            Person sut = new Person("Don", "Welch",
+                new ResidentAddress(123, "Maple St", "Edmonton", "AB", "Y7U8I9"), null);
+
+            //Act
+            //image the following statement is taken from a programmer's code
+            sut.Address = null;
+
+            //Assert
+            sut.Address.Should().BeNull();
+        }
         //retreiving the person's full name (consists of instance's first and last name, pattern last, first)
+
         #endregion
         #region Exception Tests
         //throw ArgumentNullException is firstname cannot be change (missing data)
