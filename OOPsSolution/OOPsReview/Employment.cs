@@ -253,7 +253,13 @@ namespace OOPsReview
             //when you use the .Split(delimitator) method to breakup the string into separate values
             //  you would use the delimitator '/':  string [] pieces = thestring.Split('/')
 
-            return $"{Title},{Level},{StartDate.ToString("MMM. dd yyyy")},{Years}";
+            //used at Nait for VS software which appears to NOt included the . after the
+            //  MMM of date ToString
+            //return $"{Title},{Level},{StartDate.ToString("MMM. dd yyyy")},{Years}";
+
+            //used at home for VS software which appears to included the . after the
+            //  MMM of date ToString
+            return $"{Title},{Level},{StartDate.ToString("MMM dd yyyy")},{Years}";
         }
 
         //Sample action: changed the SupervisoryLevel to be a private set

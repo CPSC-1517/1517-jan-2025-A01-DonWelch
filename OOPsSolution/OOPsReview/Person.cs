@@ -23,6 +23,10 @@ namespace OOPsReview
         public Person(string firstname, string lastname,
                 ResidentAddress address, List<Employment> employments)
         {
+            if (string.IsNullOrWhiteSpace(firstname))
+                throw new ArgumentNullException("First Name", "First Name is required, cannot be missing");
+            if (string.IsNullOrWhiteSpace(lastname))
+                throw new ArgumentNullException("Last Name", "Last Name is required, cannot be missing");
             FirstName = firstname;
             LastName = lastname;
             Address = address;
