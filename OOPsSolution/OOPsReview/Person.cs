@@ -63,6 +63,16 @@ namespace OOPsReview
         {
             if (employment == null)
                 throw new ArgumentNullException("Employment require, missing employment data. Unable to add employment");
+
+            //one could code a loop to examine each item in the collection to determind if there
+            //  is a duplicate history instance
+            //However, lets used methods that have already been built to do searching of a collection
+            //First step: determine if you need a copy of the instance
+            //  in this case: only the knowledge that an instance exist is needed (do not actual need the instance)
+            //                only at least one needs to exist: .Any()
+            if (EmploymentPositions.Any(x => x.Title.Equals(employment.Title)
+                                          && x.StartDate.Equals(employment.StartDate)))
+                throw new ArgumentException($"Duplicate employment. Employment record with position {employment.Title} on {employment.StartDate}.");
             EmploymentPositions.Add(employment);
         }
 

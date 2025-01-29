@@ -410,7 +410,7 @@ namespace TDDUnitTesting
             Action action = () => sut.AddEmployment(duplicate);
 
             //Assert
-            action.Should().Throw<ArgumentException>().WithMessage($"*{duplicate.Title} on {duplicate.StartDate}");
+            action.Should().Throw<ArgumentException>().WithMessage($"*{duplicate.Title} on {duplicate.StartDate}*");
         }
         //change person's name: missing data
         [Theory]
