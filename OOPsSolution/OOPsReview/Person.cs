@@ -61,11 +61,15 @@ namespace OOPsReview
 
         public void AddEmployment(Employment employment)
         {
+            if (employment == null)
+                throw new ArgumentNullException("Employment require, missing employment data. Unable to add employment");
             EmploymentPositions.Add(employment);
         }
 
         public void ChangeFullName(string firstname, string lastname)
         {
+            //remember that the code was refactored earlier to place the validation for missing
+            //  data within the property, thus, there will be no need for additional code
             FirstName = firstname;
             LastName = lastname;
         }

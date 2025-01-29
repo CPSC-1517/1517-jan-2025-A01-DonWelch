@@ -364,8 +364,76 @@ namespace TDDUnitTesting
         #endregion
         #region Exception Tests
         //adding new employment: missing data
+        [Fact]
+        public void Throw_Exception_When_Adding_Employment_With_Missing_Data()
+        {
+            //Arrange
+           //since we are trying to use the method of an instance, one needs an instance in the first place
+            Person sut = new Person("Don", "Welch", null, null);
+
+            //Act
+            //image the following statement is taken from a programmer's code
+            Action action = () => sut.AddEmployment(null);
+
+            //Assert
+            //one can test the contents of the error message being thrown
+            //this is done using the .WithMessage(string)
+            //a substring of the error message can be check using *.....* for the string
+            //one can use string interpolation with the creation of the string
+            action.Should().Throw<ArgumentNullException>().WithMessage("*missing employment data*");
+        }
         //adding new employment: data already present
+        [Fact]
+        public void Throw_Exception_When_Addig_Duplicate_Employment_History()
+        {
+            //Arrange
+            ResidentAddress address = new ResidentAddress(123, "Maple St.",
+                                "Edmonton", "AB", "T6Y7U8");
+            Employment one = new Employment("PG I", SupervisoryLevel.TeamMember,
+                            DateTime.Parse("2013/10/04"), 6.5);
+            TimeSpan days = DateTime.Today - DateTime.Parse("2020/04/04");
+            double years = Math.Round(days.Days / 365.2, 1);
+            Employment two = new Employment("PG II", SupervisoryLevel.TeamMember,
+                            DateTime.Parse("2020/04/04"), years);
+            Employment duplicate = new Employment("SUP I", SupervisoryLevel.Supervisor,
+                         DateTime.Today, 0);
+            List<Employment> employments = new(); //in .Net core, one does not need to include
+                                                  //the datatype with need if the construction is
+                                                  //using the system default
+            employments.Add(one);
+            employments.Add(two);
+            employments.Add(duplicate);
+
+            Person sut = new Person("Lowan", "Behold", address, employments);
+
+            //Act
+            Action action = () => sut.AddEmployment(duplicate);
+
+            //Assert
+            action.Should().Throw<ArgumentException>().WithMessage($"*{duplicate.Title} on {duplicate.StartDate}");
+        }
         //change person's name: missing data
+        [Theory]
+        [InlineData(null,"Behold")]
+        [InlineData("", "Behold")]
+        [InlineData("    ","Behold")]
+        [InlineData("Lowand",null)]
+        [InlineData("Lowand","")]
+        [InlineData("Lowand","    ")]
+        public void Throw_Exception_Changing_FullName_With_Missing_Data(string firstname, string lastname)
+        {
+            //Arrange
+            Person sut = new Person("Charity", "Kase", null, null);
+
+            //Act
+            //the act in this case is the capture of the exception that has been thrown
+            //use () => to indicate that the following delegate is to be executed as the required code
+            Action action = () => sut.ChangeFullName(firstname, lastname);
+
+            //Assert
+            //test to see if the expectd exception was thrown
+            action.Should().Throw<ArgumentNullException>().WithMessage("*is required*");
+        }
         #endregion
         #endregion
     }
