@@ -66,10 +66,10 @@
     //this variable is tied to the input control (Id=inputcontrol) via the @bind parameter
     private string inputValue = "";
 
-     /*
-     * the method OnClear is the processing that will be done in response to
-     *  pressing the clear buttons on the page
-     * the method is linked to the button via the @onclick parameter.
+    /*
+    * the method OnClear is the processing that will be done in response to
+    *  pressing the clear buttons on the page
+    * the method is linked to the button via the @onclick parameter.
     */
     private void OnClear()
     {
@@ -78,6 +78,47 @@
 
     private void OnFlip()
     {
-        
+        //play the game Heads (0) or Tails (1)
+        //use the WelcomeMsg to display the results of a flip
+
+        WelcomeMsg = ""; //clear out any old messages
+
+        //use the Random instance to generate the flip on the computer
+        Random rnd = new Random();
+        int flip = rnd.Next(0, 2); //the generated values will be 0 or 1
+
+        if(inputValue.ToUpper().Trim().Equals("H")
+         || inputValue.ToUpper().Trim().Equals("T"))
+        {
+            if(flip == 0)
+            {
+                //heads
+                if (inputValue.ToUpper().Trim().Equals("H"))
+                {
+                    WelcomeMsg = "You guessed the computer flip. You win";
+                }
+                else
+                {
+                    WelcomeMsg = "You did not guessed the computer flip. You lose";
+                }
+            }
+            else
+            {
+                //tails
+                if (inputValue.ToUpper().Trim().Equals("T"))
+                {
+                    WelcomeMsg = "You guessed the computer flip. You win";
+                }
+                else
+                {
+                    WelcomeMsg = "You did not guessed the computer flip. You lose";
+                }
+            }
+        }
+        else
+        {
+            //invalid data
+            WelcomeMsg = "The value entered is not H or T. Try again";
+        }
     }
 }
