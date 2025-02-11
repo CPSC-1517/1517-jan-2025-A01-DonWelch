@@ -1,0 +1,312 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+
+namespace OOPsReview
+{
+    public class Employment
+    {
+        //data members (aka fields, variables, attributes)
+        //typically data members are private and hold data for use
+        //  within your class
+        //usually associated with a property
+        //a data member does not have any built-in validation
+        private string _Title;
+        private double _Years;
+        private SupervisoryLevel _Level;
+
+        //properties
+        //are associated with a single piece of data.
+        //Properties can be implemented by:
+        //  a) fully implemented property
+        //  b) auto implmented property
+
+        //A property does not need to store data
+        //  this type of property is referred to as a read-only
+        //  this property typically uses existing data values
+        //      within the instance to return a computed value
+
+        //fully implemented properties usually has additional logic
+        //  to execute for control over the data: such as validation
+        //fully implemented properties will have a declared data
+        //  member to store the data into
+
+        //auto implemented properties do not have additional logic
+        //Auto implemented properties do not have a declared
+        //  data member instead the o/s will create on the property's
+        //  behave a storage that is accessable ONLY by the property
+
+        ///<summary>
+        ///Property: Title
+        ///validation: there must be a character in the string
+        ///a property will always have a getter (accessor)
+        ///a property may or maynot have a setter (mutator)
+        /// no mutator the property is consider "read-only" and is
+        ///         usually returning a computed field
+        /// has a mutator, the property will at some point save the data
+        ///     to storage
+        /// the mutator may be public (default) or private
+        ///     public: accessable by outside users of the class
+        ///     private: accessable ONLY within the class, usually
+        ///                 via the constructor or a method
+        /// !!!!! a property DOES NOT have ANY declared incoming parameters !!!!!!
+        /// </summary>
+        public string Title
+        {
+            get
+            {
+                //accessor (getter)
+                //returns the string associated with this property
+                return _Title;
+            }
+
+            set
+            {
+                //mutator (setter)
+                //it is within the set that the validation of the data
+                //  is done to determine if the data is acceptable
+                //if all processing of the string is done via the property
+                //  it will ensure that good data is within the associated string
+                if (string.IsNullOrWhiteSpace(value))
+               // {
+                    throw new ArgumentNullException("Title", "Title cannot be empty or just blanks");
+                // }
+                // else
+                // {
+                //it is a very good practice to remove leading and trailing spaces on strings
+                //  so that only the required and important characters are stored.
+                //to do this santization use .Trim()
+                _Title =value.Trim();
+               // }
+            }
+        }
+
+        ///<summary>
+        ///Property: Years
+        ///validation: the value must be 0 or greater
+        ///datatype: double
+        ///</summary>
+        ///
+
+        public double Years
+        {
+            get { return _Years; }
+            set
+            {
+                //replace the hard-coded validation test with a static method in a "utilities" class
+                //if (value < 0)
+
+                //use the sample static method from the Utilities class
+                if (!Utilities.IsZeroOrPositive(value))
+                    throw new ArgumentException($"The value {value} is not acceptable for years. Years must be 0 or greater.");
+                _Years = value;
+            }
+        }
+
+        ///<summary>
+        ///Property: StartDate
+        ///validation: none
+        ///set access: private
+        ///</summary>
+        //since the access to this property for the mutator is private ANY validation
+        //  for this data will need to be done elsewhere
+        //possible locations for the validation could be in
+        //  a) a constructor
+        //  b) any method that will alter the data
+        //a private mutator will NOT allow alteration of the data via a property for the
+        //  outside user, however, methods within the class will still be able to
+        //  use the property
+
+        //this is an auto-implemented property
+        //the access of private to the mutator is independent of the type of property implementation
+        public DateTime StartDate { get; private set; }
+
+        ///<summary>
+        ///Property: Level
+        ///validation: none
+        ///datatype: this is an enum (SupervisoryLevel)
+        ///</summary>
+        ///
+
+        //you could code an auto implemented property as a fully implemented property
+        public SupervisoryLevel Level 
+        {
+            get { return _Level; }
+
+            //set was changed to be private during the demonstration of methods
+            private set { _Level = value; }
+        }
+
+        //constructors
+
+        //your class does not technically need a coded constructor
+        //if you code a constructor for your class you are responsible for coding ALL constructors
+        //if you do not code a constructor then the system will assign the software datatype defaults
+        //  to your variables (data members/auto-implemented properties)
+
+        //syntax: accesslevel constructorname([list of parameters]) { .... }
+        //NOTE: NO return datatype
+        //      the constructorname MUST be the class name
+
+        //Default
+        //simulates the "system defaults"
+        public Employment()
+        {
+            //if there is no code within this constructor, the actions for setting
+            //  your internal fields will be using the system defaults for the datatype
+
+            //optionally!!!!!
+            // you could assign values to your initial fields within this constructor typically
+            //      using literal values
+            //Why?
+            // your internal fields may have validation attached to the data for the field
+            // this validation is usually within the property
+            // you would wish to have valid data values for your internal fields
+            Title = "Unknown";  //this is to pass the validation on the data member
+            Level =SupervisoryLevel.TeamMember; //desired a different default
+            StartDate = DateTime.Today; // the default though valid is unacceptable/unreasonable
+
+            //Years?
+            //the default for years (0.0) is fine
+            //HOWEVER: if you wish to could code the default for any field
+            Years = 0.0;
+        }
+
+        //Greedy
+        //this is the constructor typically used to assign values to a instance at the time of
+        //    creation
+        //the list of parameters may or maynot contain default parameter values
+        //if you have assigned default parameter values then those parameters MUST be at the end of
+        //  the parameter list
+        //in this example years is a default parameter (it has an assigned value if the value
+        //  is not included on the coded constructor in the user program
+        //using a call to a method with default parameter
+        //     Employment myJob = new Employment("PGI", SupervisoryLevel.Entry,
+        //                                          DateTime.Today);
+
+        public Employment(string title, SupervisoryLevel level,
+                            DateTime startdate, double years = 0.0)
+        {
+            Title = title;
+            Level = level;
+            //Years = years;
+
+            //one could add valiation, especially if the property has a private set  OR the property
+            //  is an auto-implemented property that has restrictions
+            //example
+            //validation, start date must not exist in the future
+            //validation can be done anywhere in your class
+            //since the property is auto-implemented AND/OR has a private set,
+            //      validation can be done  in the constructor OR a behaviour 
+            //      that alters the property
+            //IF the validation is done in the property, IT WOULD NOT be an
+            //      auto-implemented property BUT a fully-implemented property
+            // .Today has a time of 00:00:00 AM
+            // .Now has a specific time of day 13:05:45 PM
+            //by using the .Today.AddDays(1) you cover all times on a specific date
+
+            //if (startdate >= DateTime.Today.AddDays(1))
+            //    throw new ArgumentException($"The start data of {startdate} is invalid, dates cannot be in the future");
+            //StartDate = startdate;
+
+            //replacement with private method to do value validation
+            if (CheckDate(startdate))
+                StartDate = startdate;
+
+            if (years != 0.0)
+            {
+                Years=years;
+            }
+            else
+            {
+                if(startdate == DateTime.Today)
+                {
+                    Years = years;
+                }
+                else
+                {
+                    //calculate the actual years from startdate to today
+                    TimeSpan timeDiff = DateTime.Today - startdate;
+                    Years = Math.Round((timeDiff.Days / 365.2), 1);
+                }
+            }
+
+        }
+
+        //methods (aka behaviours)
+        public override string ToString()
+        {
+            //this string is known as a "comma separate value" string (csv)
+            //concern: when the date is used, it could have a , within the data value
+            //solution: IF this is a possibility that a value that is used in creating the string pattern
+            //              could make the pattern invalid, you should explicitly handle how the value should be
+            //              displayed in the string
+            //example Date:  Jan 05, 2025 (due to using StartDate.ToShortDate())
+            //solution:  specific your own format  StartDate.ToString("MMM dd yyyy")
+
+            //Another solution is to change your delimitator that separates your values to a character
+            //  that is not within your range of possible values
+            //example use a '/'
+            //when you use the .Split(delimitator) method to breakup the string into separate values
+            //  you would use the delimitator '/':  string [] pieces = thestring.Split('/')
+
+            //used at Nait for VS software which appears to NOt included the . after the
+            //  MMM of date ToString
+            //return $"{Title},{Level},{StartDate.ToString("MMM. dd yyyy")},{Years}";
+
+            //used at home for VS software which appears to included the . after the
+            //  MMM of date ToString
+            return $"{Title},{Level},{StartDate.ToString("MMM dd yyyy")},{Years}";
+        }
+
+        //Sample action: changed the SupervisoryLevel to be a private set
+        //this means altering the Level must be done in constructor (which executes ONLY ONCE during creation) or
+        //  via a method
+
+        public void SetEmploymentResponsibilityLevel(SupervisoryLevel level)
+        {
+            Level = level;
+        }
+
+        //StartDate is private set
+        //Note: when you have a private set, you MAY NEED to duplicate validation in several
+        //      places (constructor AND this method)
+        public void CorrectStartDate(DateTime startdate)
+        {
+            if (CheckDate(startdate))
+                 StartDate = startdate;
+
+            //during the testing of the unit tests, it has been discovered that the number of years
+            //   should also be altered to have a correct timespan
+            TimeSpan days = DateTime.Today - StartDate;
+            Years = Math.Round((days.Days / 365.2), 1);
+        }
+
+        public double CalculateLengthOfService()
+        {
+            double lengthOfService = 0;
+            //do a calculation that determines how long one has been in the position
+            //since the instance needs to exist to be able to call this method in the first place
+            //  that means that the data is ALREADY in the instance AND THEREFORE does NOT need to
+            //  be passed in as a parameter!!!!
+
+
+            return lengthOfService;
+        }
+
+        //create a private method to handle duplicate code within a class where the method
+        //  is NOT for use by the outside user
+        //Example: the validation of startdate is in two places
+        //          reduce redundance by making a private method 
+        private bool CheckDate(DateTime value)
+        {
+            
+            if (value >= DateTime.Today.AddDays(1))
+                throw new ArgumentException($"The start data of {value} is invalid, dates cannot be in the future");
+            return true;
+        }
+    }
+}
