@@ -324,7 +324,7 @@ each row is stack top to bottom
         if (errorMsgs.Count == 0)
         {
             //consider the data at this point to be valid
-            feedBackMsg = $"{empTitle} {empYears} {empStartDate} {empLevelS} {empLevelR}";
+            //feedBackMsg = $"{empTitle} {empYears} {empStartDate} {empLevelS} {empLevelR}";
 
             //if you are using a class to collect and hold your data
             //      you need to be concerned with how the class coding handles
@@ -332,6 +332,10 @@ each row is stack top to bottom
             //this normally means some type of try/catch processing
             try
             {
+                //test the try/catch
+                //ONCE TESTED comment out this assignment statement
+                //empYears = -2; //this is to cause an exception from the class to demonstrate
+
                 //create an instance of Employment to use to write to the data file
                 //the data file record will use the ToString() of Employment
                 //(Note: you could manually in this method create the concatenated string for
@@ -360,7 +364,29 @@ each row is stack top to bottom
                 //              on a PC BUT for an Apple machine, you must use the forward slash (/)
                 string csvFilePathName = $@"{appPathName}/Data/Employment.csv";
 
+                //WARNING: when you use the System.IO.File you MUST use the
+                //          fully qualified naming to the class method you wish
+                //          to use.
+                //          Fully qualified naming includes namespace.methodOrProperty
+                //         you can not get by just using a reference to the
+                //           namespace at the top of your code (using System.IO;)
 
+                //write the data from the employment instance (ToString) as a line to the csv file
+                //since the string does not contain a line feed character, we will need to concatenate
+                //  the character (\n)
+                //the System.IO.File method will be AppendAllText(filepathname,string)
+                // AppendAllText will
+                //   a) create the file if it does not exist
+                //   b) opens
+                //   c) writes the text
+                //   d) closes
+                string line = $"{employment.ToString()}\n";
+                System.IO.File.AppendAllText(csvFilePathName, line);
+
+                //give the user a feed back message that indicates the success or failure
+                //  of the event
+                //here it would be a success message
+                feedBackMsg = "Your data has been saved to file";
             }
             catch (ArgumentNullException ex)
             {
