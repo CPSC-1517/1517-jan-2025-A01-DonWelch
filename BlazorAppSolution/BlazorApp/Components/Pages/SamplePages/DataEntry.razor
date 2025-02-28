@@ -209,13 +209,18 @@ each row is stack top to bottom
         <!-- to center the buttons, we will use the entire row (12 columns) and the bootstrap class text-center -->
         <div class="col-md-12 text-center">
             <button type="submit" class="btn btn-outline-primary rounded-pill"
-            @onclick="OnCollect">
+                    @onclick="OnCollect" style="width:140px;">
                 Submit
             </button>
             &nbsp;&nbsp;
             <button type="submit" class="btn btn-outline-secondary rounded-pill"
-            @onclick="OnClear">
+                    @onclick="OnClear" style="width:140px;">
                 Clear
+            </button>
+            &nbsp;&nbsp;
+            <button type="submit" class="btn btn-outline-secondary rounded-pill"
+                    @onclick="OnGoToReport" style="width:140px;">
+                Go To Report
             </button>
         </div>
     </div>
@@ -261,7 +266,9 @@ each row is stack top to bottom
     [Inject]
     public IWebHostEnvironment webHostEnvironment { get; set; }
 
-
+    //needed for the navigational movement from page A to page B
+    [Inject]
+    public NavigationManager navigationManager { get; set; }
 
     protected override void OnInitialized()
     {
@@ -396,12 +403,12 @@ each row is stack top to bottom
             {
                 errorMsgs.Add("Bad Value", GetInnerException(ex).Message);
             }
-            
+
             catch(Exception ex)
             {
                 errorMsgs.Add("System Error", GetInnerException(ex).Message);
             }
-           
+
         }
 
 
@@ -433,6 +440,26 @@ each row is stack top to bottom
             empStartDate = DateTime.Today;
             empLevelS = SupervisoryLevel.Entry;
             empLevelR = SupervisoryLevel.Entry;
+        }
+    }
+
+    private async Task OnGoToReport()
+    {
+        //this event will reset the controls back to the opening page state
+
+        //clear out all old messages
+        feedBackMsg = "";
+
+        //issue a prompt dialogue to the user to obtain confirmation of the action
+        //create your message for the dialogue box into a generic object[]
+        object[] messageline = new object[]
+        { "Leaving the page will lose all unsaved data. Are you sure you wish to continue?"};
+        if (await jsRuntime.InvokeAsync<bool>("confirm", messageline))
+        {
+            //this method needs the url of the page you wish to go to
+            //routing names allow you to navigate within your web app
+            //use the routing name of the page you wish to go to
+            navigationManager.NavigateTo("report");
         }
     }
 }
