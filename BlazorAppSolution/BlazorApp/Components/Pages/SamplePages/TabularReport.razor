@@ -28,6 +28,7 @@
         <p>@feedBackMsg</p>
     </div>
 }
+
 @if (errorMsgs.Count > 0)
 {
     <div class="alert alert-danger">
@@ -85,7 +86,7 @@ else
     <div class="row">
         <div class="offset-3 col-md-6 overflow-scroll" style="height:350px;">
             <table class="table table-striped">
-                <thead>
+                <thead style="position: sticky; top: 0; background-color:white;">
                     <tr>
                         <th>Title</th>
                         <th>Level</th>
@@ -169,7 +170,7 @@ else
         {
             "Employment.csv", "EmploymentEmpty.csv", "EmploymentBad.csv", "FileDoesNotExist.csv"
         };
-        string filename = $"{filePathName}{files[2]}";
+        string filename = $"{filePathName}{files[0]}";
 
         //The System.IO.File method ReadAllLines() will return an array
         //  of lines as strings where each array element represents a
