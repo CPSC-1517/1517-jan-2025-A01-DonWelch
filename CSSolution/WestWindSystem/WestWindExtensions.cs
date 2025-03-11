@@ -53,6 +53,12 @@ namespace WestWindSystem
                 //  class method (see your Program.cs in your wb app)
                 return new BuildVersionServices(context);
             });
+
+            services.AddTransient<RegionServices>((serviceProvider) =>
+            {
+                var context = serviceProvider.GetService<WestWindContext>();
+                return new RegionServices(context);
+            });
         }        
     }
 }
