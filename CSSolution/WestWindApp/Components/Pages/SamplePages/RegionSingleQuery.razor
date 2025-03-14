@@ -108,11 +108,61 @@
 
     private void GetByEntry()
     {
-        
+        //clear old messages
+        feedBackMsg = "";
+        errorMsgs.Clear();
+        region = null;
+
+        //validate your incoming argument values
+
+        //no identity pkey on a sql db can be less than 1 
+        if(entryarg <= 0)
+        {
+            errorMsgs.Add($"Your region value {entryarg} is invalid. Must be 1 or greater");
+        }
+
+        if(errorMsgs.Count == 0)
+        {
+            //assuming we have a good argument value
+            //consume a service
+            region = _regionServices.Region_GetByID(entryarg);
+            if(region == null)
+            {
+                //this is not an error
+                //simply nothing was found
+                feedBackMsg = $"There is no region by the entered region argument value {entryarg}";
+            }
+        }
     }
 
     private void GetBySelection()
     {
+        //clear old messages
+        feedBackMsg = "";
+        errorMsgs.Clear();
+        region = null;
 
+        //validate your incoming argument values
+
+        //the list has a prompt line
+        //if the user has not change the selection to a non-prompt line choice
+        //  then the user should be instructed to do so.
+        if (selectarg == 0)
+        {
+            errorMsgs.Add($"You have not selected a region to view.");
+        }
+
+        if (errorMsgs.Count == 0)
+        {
+            //assuming we have a good argument value
+            //consume a service
+            region = _regionServices.Region_GetByID(selectarg);
+            if (region == null)
+            {
+                //this is not an error
+                //simply nothing was found
+                feedBackMsg = $"There is no region to view for the selection ";
+            }
+        }
     }
 }
