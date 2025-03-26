@@ -1,0 +1,57 @@
+﻿@page "/productcrud"
+@using WestWindSystem.Entities
+@using WestWindSystem.BLL
+
+
+<PageTitle>Product CRUD</PageTitle>
+
+<h1>Product CRUD</h1>
+
+@if (feedBackMessage != null)
+{
+    <div class="alert alert-info">
+        @feedBackMessage
+    </div>
+}
+
+
+<div>
+   
+</div>
+
+@code {
+
+    private string? feedBackMessage;
+
+    [Inject]
+    private ProductServices _productServices { get; set; }
+    private Product CurrentProduct = new();
+
+    [Inject]
+    private CategoryServices _categoryServices { get; set; }
+    private List<Category> categories = new();
+
+    // private int selectedCategoryId;
+    [Inject]
+    private SupplierServices _supplierServices { get; set; }
+    private List<Supplier> suppliers = new();
+
+   
+    [Inject]
+    protected NavigationManager CurrentNavigationManager { get; set; }
+
+    protected override void OnInitialized()
+    {
+        categories = _categoryServices.Categories_Get();
+        suppliers = _supplierServices.Supplier_GetList();
+	base.OnInitialized();
+      
+    }
+
+    private Exception GetInnerException(Exception ex)
+    {
+        while (ex.InnerException != null)
+            ex = ex.InnerException;
+        return ex;
+    }
+}
