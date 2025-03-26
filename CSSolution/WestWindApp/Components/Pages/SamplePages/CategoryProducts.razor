@@ -48,17 +48,17 @@
         one button will have a NavLink to the new page
         one button will call an event method on this page which
         will navigate to the new page
-
+        -->
         &nbsp;
         <button type="submit" class="btn btn-outline-secondary rounded-pill">
-        <NavLink href="productcrud">CRUD via Navlink</NavLink>
+            <NavLink href="productcrud">CRUD via Navlink</NavLink>
         </button>
         &nbsp;
         <button type="submit" class="btn btn-outline-secondary rounded-pill"
         @onclick="GoToCRUD">
-        CRUD via Event
+            CRUD via Event
         </button> 
-        -->
+
     </div>
 </div>
 <br/><br/>
@@ -71,7 +71,7 @@
                 <table class="table table-striped">
                     <thead style="position:sticky; top:0; background-color:white;">
                         <tr>
-
+                            <th>&nbsp;</th>
                             <th>Product</th>
                             <th>Unit Size</th>
                             <th>Company Name</th>
@@ -81,8 +81,18 @@
                     <tbody>
                         @foreach(Product item in productList)
                         {
+                            // the link on the display line will send the display to the crud page
+                            // HOWEVER, an important piece of data also needs to be send to the crud page
+                            //          that piece of data is the pkey of the product to display on
+                            //                  the crud
+                            // Solution: The "View" needs to be an anchor tag to be able to transfer
+                            //              the user to the CRUD page
+                            //           we can add that information to the href as a routing parameter
+                            //           the crud page will need to alter its @page directive to capture
+                            //                the routing parameter
+                            //           on this page add the parameter value to send to the href
                             <tr>
-
+                                <td><a href="/productcrud/@item.ProductID">View</a></td>
                                 <td>@item.ProductName</td>
                                 <td>@item.QuantityPerUnit</td>
                                 <td> @item.Supplier.CompanyName</td>
@@ -178,6 +188,6 @@ drop down list of category names to select from
         //this event will use the Navigate services of the web software
         //the Navigate services must be injected into the page
         //the location your are going to is referenced by the page's routing parameter
-        
+        _navManager.NavigateTo("productcrud");
     }
 }
