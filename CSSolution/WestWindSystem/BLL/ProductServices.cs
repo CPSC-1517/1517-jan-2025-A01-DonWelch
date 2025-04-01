@@ -27,10 +27,10 @@ namespace WestWindSystem.BLL
         }
         #endregion
 
-        //Queries
+        #region Queries
 
-       //to retreive products for a particular category
-       public List<Product> Product_GetByCategoryID(int categoryid)
+        //to retreive products for a particular category
+        public List<Product> Product_GetByCategoryID(int categoryid)
         {
             //IEnumerable<Product> info = _context.Products
             //                                    .Where(x => x.CategoryID ==  categoryid)
@@ -56,5 +56,17 @@ namespace WestWindSystem.BLL
         //                                        .ToList();
         //    return info;
         //}
+
+        public Product Product_GetByID(int productid)
+        {
+            Product info = _context.Products
+                                    .FirstOrDefault(x => x.ProductID == productid);
+            return info;
+
+            //alternative
+            //.Find search using ONLY the pkey value
+            //return _context.Products.Find(productid);
+        }
+        #endregion
     }
 }
