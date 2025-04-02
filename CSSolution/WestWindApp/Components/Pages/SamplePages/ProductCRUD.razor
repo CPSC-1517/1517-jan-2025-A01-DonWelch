@@ -328,7 +328,7 @@ a @formname attribute with any unique value, or pass a FormName parameter if usi
                     //call the product services to receive the "good" data and add it to the database
                     //call the service with the good CurrentProduct (it actually the record for the database)
 
-                    int newproductid = 124; // _productServices.Product_Add(CurrentProduct);
+                    int newproductid =  _productServices.Product_Add(CurrentProduct);
 
                     //if an error was thrown by the ProductServices or by the database
                     //  control will be passed to the catch
