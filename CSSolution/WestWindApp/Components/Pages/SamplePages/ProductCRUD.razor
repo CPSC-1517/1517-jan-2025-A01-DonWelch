@@ -163,10 +163,21 @@ one
                 Update
             </button>
             &nbsp;&nbsp;
-            <button type="submit" class="btn btn-outline-primary rounded-pill"
-            @onclick="OnDiscontinue" style="width:160px;">
-                Discontinue
-            </button>
+            @if(CurrentProduct.Discontinued)
+            {
+                <button type="submit" class="btn btn-outline-primary rounded-pill"
+                        @onclick="OnActivate" style="width:160px;">
+                    Activate
+                </button>
+            }
+            else
+            {
+                <button type="submit" class="btn btn-outline-primary rounded-pill"
+                        @onclick="OnDiscontinue" style="width:160px;">
+                    Discontinue
+                </button>
+            }
+           
             &nbsp;&nbsp;
             <button type="submit" class="btn btn-outline-primary rounded-pill"
             @onclick="OnClear" style="width:160px;">
@@ -436,9 +447,160 @@ one
     
     private void OnDiscontinue()
     {
+        //clear old messages
+        feedBackMessage = "";
+        validationMessageStore.Clear();
 
+        //whenever you could receive a thrown exception, your web page must be able to handle it
+        try
+        {
+            //the first test is to check to see if there are ANY errors already caught
+            //  by the form using the DataAnnotationsValidator?
+            // if (editContext.Validate())
+            // {
+            //     //no errors on the form at this time
+
+            //     //if there are additional custom validation of your data
+            //     //  you can still do that within the event coding
+
+            //     if (CurrentProduct.CategoryID == 0)
+            //     {
+            //         validationMessageStore.Add(editContext.Field(nameof(CurrentProduct.CategoryID)),
+            //                                     "You must select a category");
+            //     }
+            //     if (CurrentProduct.SupplierID == 0)
+            //     {
+            //         validationMessageStore.Add(editContext.Field(nameof(CurrentProduct.SupplierID)),
+            //                                     "You must select a supplier");
+            //     }
+
+            //     if (editContext.GetValidationMessages().Any())
+            //     {
+            //         //notify the editcontext that there has been a change to the message store
+            //         editContext.NotifyValidationStateChanged();
+            //     }
+            //     else
+            //     {
+                    //the program assumes that the data is clean and can be further processed
+
+                    //call the product services to receive the "good" data and update it to the database
+
+                    int rowsaffected = _productServices.Product_LogicalDelete(CurrentProduct);
+
+                    //on an Updated, there is two possibilities
+                    //a) a records(s) did get updated
+                    //b) no record(s) were ACTUALLy updated AND the request did NOT abort
+
+                    if (rowsaffected == 0)
+                    {
+                        feedBackMessage = $"Product {CurrentProduct.ProductName} (ID: {CurrentProduct.ProductID}) " +
+                                            $" has not been discontinued. Check for product again.";
+                    }
+                    else
+                    {
+                        feedBackMessage = $"Product {CurrentProduct.ProductName} (ID: {CurrentProduct.ProductID}) " +
+                                            " has been discontinued.";
+                    }
+
+             //     }
+            //}
+        }
+        catch (ArgumentNullException ex)
+        {
+            //usually if an error occurs only ONE message will be executed
+            //You could setup a special error message string to display on your page
+            //  that is NOT the validationMessageStore and is NOT the feedBackMessage
+            //You could style this special error message string as an alert alert-danger
+            feedBackMessage = $"Missing Data: {GetInnerException(ex).Message}";
+        }
+        catch (ArgumentException ex)
+        {
+            feedBackMessage = $"Data Issue: {GetInnerException(ex).Message}";
+        }
+        catch (Exception ex)
+        {
+            feedBackMessage = $"System Error: {GetInnerException(ex).Message}";
+        }
     }
     
+    private void OnActivate()
+    {
+        //clear old messages
+        feedBackMessage = "";
+        validationMessageStore.Clear();
+
+        //whenever you could receive a thrown exception, your web page must be able to handle it
+        try
+        {
+            //the first test is to check to see if there are ANY errors already caught
+            //  by the form using the DataAnnotationsValidator?
+            // if (editContext.Validate())
+            // {
+            //     //no errors on the form at this time
+
+            //     //if there are additional custom validation of your data
+            //     //  you can still do that within the event coding
+
+            //     if (CurrentProduct.CategoryID == 0)
+            //     {
+            //         validationMessageStore.Add(editContext.Field(nameof(CurrentProduct.CategoryID)),
+            //                                     "You must select a category");
+            //     }
+            //     if (CurrentProduct.SupplierID == 0)
+            //     {
+            //         validationMessageStore.Add(editContext.Field(nameof(CurrentProduct.SupplierID)),
+            //                                     "You must select a supplier");
+            //     }
+
+            //     if (editContext.GetValidationMessages().Any())
+            //     {
+            //         //notify the editcontext that there has been a change to the message store
+            //         editContext.NotifyValidationStateChanged();
+            //     }
+            //     else
+            //     {
+            //the program assumes that the data is clean and can be further processed
+
+            //call the product services to receive the "good" data and update it to the database
+
+            int rowsaffected = _productServices.Product_Activate(CurrentProduct);
+
+            //on an Updated, there is two possibilities
+            //a) a records(s) did get updated
+            //b) no record(s) were ACTUALLy updated AND the request did NOT abort
+
+            if (rowsaffected == 0)
+            {
+                feedBackMessage = $"Product {CurrentProduct.ProductName} (ID: {CurrentProduct.ProductID}) " +
+                                    $" has not been activated. Check for product again.";
+            }
+            else
+            {
+                feedBackMessage = $"Product {CurrentProduct.ProductName} (ID: {CurrentProduct.ProductID}) " +
+                                    " has been activated.";
+            }
+
+            //     }
+            //}
+        }
+        catch (ArgumentNullException ex)
+        {
+            //usually if an error occurs only ONE message will be executed
+            //You could setup a special error message string to display on your page
+            //  that is NOT the validationMessageStore and is NOT the feedBackMessage
+            //You could style this special error message string as an alert alert-danger
+            feedBackMessage = $"Missing Data: {GetInnerException(ex).Message}";
+        }
+        catch (ArgumentException ex)
+        {
+            feedBackMessage = $"Data Issue: {GetInnerException(ex).Message}";
+        }
+        catch (Exception ex)
+        {
+            feedBackMessage = $"System Error: {GetInnerException(ex).Message}";
+        }
+    }
+
     private async Task OnClear()
     {
         //clear out all old messages
